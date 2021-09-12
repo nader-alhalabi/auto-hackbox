@@ -1,0 +1,16 @@
+---
+name: ssh
+
+provides:
+  tech:
+    - entry:
+        name: ssh
+        version:
+        config:
+            - name: PORT_FORWARDING
+              file: main.sh
+              value:
+                - "2200"
+
+needs:
+  tech:

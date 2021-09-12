@@ -1,0 +1,1 @@
+<?php $var = $_GET['txt']; echo "$txt"?>" ?>

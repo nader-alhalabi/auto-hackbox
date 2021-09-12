@@ -1,0 +1,29 @@
+---
+name: lemp
+
+provides:
+  tech:
+    - entry:
+        name: php-fpm
+        config:
+            - name: PHP_PORT_FORWARDING
+              file: main.sh
+              value:
+                - "8800"
+    - entry:
+        name: mysql
+    - entry:
+        name: nginx
+    - entry:
+        name: patch
+
+
+needs:
+  tech:
+    - entry:
+        name: ssh
+        config:
+          - name: SSH_PORT
+            file: main.sh
+            value:
+            - "2200"

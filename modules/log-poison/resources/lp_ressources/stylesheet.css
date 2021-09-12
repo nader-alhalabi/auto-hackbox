@@ -1,0 +1,16 @@
+.content {
+    font-size: 2rem;
+    text-align: center;
+}
+
+html{
+    font-family: 'Playfair Display', serif;
+    background-color: #2f3640;
+    color: #dcdde1;
+}
+
+img{
+    border-radius: 1rem;
+    box-sizing: 2;
+}
+

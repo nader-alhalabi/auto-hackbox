@@ -1,0 +1,23 @@
+---
+name: kas
+
+provides:
+  tech:
+    - entry:
+        name: nginx
+        config:
+          - name: NGINX_LISTEN_PORT
+            file: resources/kasolutions
+            value:
+              - "8080"
+
+needs:
+  tech:
+    - entry:
+        name: ssh
+        metadata:
+        config:
+          - name: SSH_PORT
+            file: main.sh
+            value:
+              - "2200"

@@ -1,0 +1,24 @@
+---
+name: dre
+
+provides:
+  tech:
+    - entry:
+        name: php-gnupg
+
+
+needs:
+  tech:
+    - entry:
+        name: ssh
+        version:
+        config:
+          - name: SSH_PORT
+            file: main.sh
+            value:
+            - "2200"
+    - entry:
+        name: mysql
+    - entry:
+        name: php-fpm
+        version: "7.3"
