@@ -21,6 +21,14 @@ def copy_module(module):
         print("Module directory already exists")
 
 
+def delete_module(module):
+    target = './modules/{}-ready'.format(module)
+    try:
+        shutil.rmtree(target)
+    except FileExistsError:
+        print("Module (ready) directory does not exists")
+
+
 def replace(module, filename, replacements):
     script = open('./modules/{module}-ready/{filename}'.format(module=module, filename=filename), 'r')
     script_content = script.read()

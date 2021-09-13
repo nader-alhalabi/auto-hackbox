@@ -3,6 +3,7 @@ import yaml
 import runner, validator
 import argparse
 import sys
+import parser as pars
 
 
 def load_meta(module):
@@ -95,6 +96,7 @@ def interact():
             print("[*] installing...")
             runner.restore_snapshot(vmname, snapshot)
             runner.run_modules(install_list)
+            pars.delete_module(args.module)
             break
         elif selected_module not in all_modules:
             print("[!] This module is not available")
@@ -121,6 +123,7 @@ def one_module_mode():
     else:
         runner.restore_snapshot(args.vm, args.snapshot)
         runner.run_modules([args.module])
+        pars.delete_module(args.module)
 
 
 dependencies_list = []
