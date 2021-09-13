@@ -31,12 +31,12 @@ def test_add_module_log_poison():
 
 
 def test_add_module_ssh_userpass():
-    assert main.add_module("ssh-userpass") == False
-    assert main.install_list == ["ssh", "log-poison"]
+    assert main.add_module("ssh-userpass") == True
+    assert main.install_list == ["ssh", "log-poison", "ssh-userpass"]
     assert main.dependencies_list == ["ssh", "php"]
 
 
 def test_add_module_lemp():
     assert main.add_module("lemp") == True
-    assert main.install_list == ["ssh", "log-poison", "lemp"]
+    assert main.install_list == ["ssh", "log-poison", "ssh-userpass", "lemp"]
     assert main.dependencies_list == ["ssh", "php", "php-fpm", "mysql", "nginx", "patch"]

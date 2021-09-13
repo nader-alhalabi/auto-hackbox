@@ -1,6 +1,8 @@
 import os
 import yaml
 import runner, validator
+import argparse
+import sys
 
 
 def load_meta(module):
@@ -44,7 +46,8 @@ def check_dependencies(selected_module):
 
     if not module_needs:
         for prov in module_provides:
-            dependencies_list.append(prov["entry"]["name"])
+            if prov["entry"]["name"] not in dependencies_list:
+                dependencies_list.append(prov["entry"]["name"])
         return True
 
     for mod in module_needs:
@@ -54,7 +57,8 @@ def check_dependencies(selected_module):
             return False
 
     for prov in module_provides:
-        dependencies_list.append(prov["entry"]["name"])
+        if prov["entry"]["name"] not in dependencies_list:
+            dependencies_list.append(prov["entry"]["name"])
     return True
 
 
@@ -105,11 +109,28 @@ def interact():
             print("[!] This module can not be installed right now, Please check dependencies")
 
 
+def one_module_mode():
+    parser = argparse.ArgumentParser(description='Choose the module, and its VM and snapshot (CASE SENSITIVE)')
+    parser.add_argument("-m", "--module", help="Name of the module")
+    parser.add_argument("-v", "--vm", help="Name of virtual machine")
+    parser.add_argument("-s", "--snapshot", help="Name of snapshot")
+    args = parser.parse_args()
+    print(args.module,args.vm, args.snapshot)
+    if args.module not in all_modules:
+        print("Module", args.module, "is not available")
+    else:
+        runner.restore_snapshot(args.vm, args.snapshot)
+        runner.run_modules([args.module])
+
+
 dependencies_list = []
 install_list = []
+all_modules = os.listdir('./modules')
 
 if __name__ == '__main__':
-    all_modules = os.listdir('./modules')
-    print("Available modules: \n")
-    print_modules()
-    interact()
+    if len(sys.argv) > 1:
+        one_module_mode()
+    else:
+        print("Available modules: \n")
+        print_modules()
+        interact()
