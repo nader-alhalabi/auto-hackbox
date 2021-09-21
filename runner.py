@@ -2,12 +2,14 @@ import pathlib
 import subprocess
 import yaml
 import parser
+import __main__ as main
 
 path = pathlib.Path(__file__).parent.absolute()
 
 def run_modules(modules):
     for module in modules:
         parser.check_replace_config(module)
+        parser.replace(module, "main.sh", {"VMNAME" : main.vm_name})
         process = subprocess.Popen(
             'bash {path}/modules/{module}-ready/main.sh'. \
                 format(

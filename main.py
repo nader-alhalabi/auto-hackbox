@@ -54,7 +54,6 @@ def check_dependencies(selected_module):
     for mod in module_needs:
 
         if mod["entry"]["name"] not in dependencies_list:
-            #print("needs", mod["entry"]["name"])
             return False
 
     for prov in module_provides:
@@ -91,12 +90,13 @@ def interact():
         if selected_module == "run":
             vmname = input("enter VM name:")
             snapshot = input("enter Snapshot name:")
-            vmname = "debian"
-            snapshot = "CleanInstall"
             print("[*] installing...")
+            global vm_name
+            vm_name = vmname
             runner.restore_snapshot(vmname, snapshot)
             runner.run_modules(install_list)
-            pars.delete_module(args.module)
+            for mod in install_list:
+                pars.delete_module(mod)
             break
         elif selected_module not in all_modules:
             print("[!] This module is not available")
@@ -121,6 +121,8 @@ def one_module_mode():
     if args.module not in all_modules:
         print("Module", args.module, "is not available")
     else:
+        global vm_name
+        vm_name = args.vm
         runner.restore_snapshot(args.vm, args.snapshot)
         runner.run_modules([args.module])
         pars.delete_module(args.module)
@@ -129,6 +131,7 @@ def one_module_mode():
 dependencies_list = []
 install_list = []
 all_modules = os.listdir('./modules')
+vm_name = None
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
