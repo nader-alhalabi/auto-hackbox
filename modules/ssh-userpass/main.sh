@@ -2,11 +2,7 @@
 
 export TMPDIR=modules/ssh/temp/
 export RESOURCEDIR=modules/ssh-userpass/resources/
-export ENVFILE=${TMPDIR}/env.sh
-export VMNAME="debian"
-export STARTSNAPSHOT="CleanInstall"
 
-. ${ENVFILE} 2>/dev/null
 
 vboxmanage modifyvm ${VMNAME} --natpf1 "SSH,tcp,,${PORT_FORWARDING},,22"
 vboxmanage startvm ${VMNAME} --type headless
@@ -15,18 +11,18 @@ sleep 8
 
 rm -f ${TMPDIR}/mariokey*
 ssh-keygen -b 2048 -t rsa -f ${TMPDIR}/mariokey -q -N ""
-sshpass -p 1234 ssh-copy-id -i ${TMPDIR}/mariokey.pub -p 2200 mario@127.0.0.1
+sshpass -p 1234 ssh-copy-id -i ${TMPDIR}/mariokey.pub -p ${PORT_FORWARDING} mario@127.0.0.1
 chmod 700 ${TMPDIR}/mariokey*
-ssh -p 2200 -i ${TMPDIR}/mariokey mario@127.0.0.1 "ls"
+ssh -p ${PORT_FORWARDING} -i ${TMPDIR}/mariokey mario@127.0.0.1 "ls"
 
 rm -f ${TMPDIR}/rootkey*
 ssh-keygen -b 2048 -t rsa -f ${TMPDIR}/rootkey -q -N ""
-sshpass -p 1234 ssh-copy-id -i ${TMPDIR}/rootkey.pub -p 2200 root@127.0.0.1
+sshpass -p 1234 ssh-copy-id -i ${TMPDIR}/rootkey.pub -p ${PORT_FORWARDING} root@127.0.0.1
 chmod 700 ${TMPDIR}/rootkey*
-ssh -p 2200 -i ${TMPDIR}/rootkey root@127.0.0.1 "ls"
+ssh -p ${PORT_FORWARDING} -i ${TMPDIR}/rootkey root@127.0.0.1 "ls"
 
-scp -P 2200 -i ${TMPDIR}/rootkey ${RESOURCEDIR}/userpass_script.sh root@127.0.0.1:/root/
-ssh -p 2200 -i ${TMPDIR}/rootkey root@127.0.0.1 "bash /root/userpass_script.sh"
+scp -P ${PORT_FORWARDING} -i ${TMPDIR}/rootkey ${RESOURCEDIR}/userpass_script.sh root@127.0.0.1:/root/
+ssh -p ${PORT_FORWARDING} -i ${TMPDIR}/rootkey root@127.0.0.1 "bash /root/userpass_script.sh"
 
 
 vboxmanage controlvm ${VMNAME} acpipowerbutton
