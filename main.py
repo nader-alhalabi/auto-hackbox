@@ -35,6 +35,7 @@ def read_module(module):
 
 
 def print_modules():
+    print("Available modules: \n")
     for module in all_modules:
         print(all_modules.index(module), end="- ")
         read_module(module)
@@ -84,6 +85,7 @@ def add_module(selected_module):
 
 
 def multi_module_mode():
+    print_modules()
     while True:
         selected_module = input(" - Select the module to install (or type \"run\" to start installing):")
 
@@ -137,6 +139,4 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         one_module_mode()
     else:
-        print("Available modules: \n")
-        print_modules()
         multi_module_mode()
