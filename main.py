@@ -83,7 +83,7 @@ def add_module(selected_module):
         return False
 
 
-def interact():
+def multi_module_mode():
     while True:
         selected_module = input(" - Select the module to install (or type \"run\" to start installing):")
 
@@ -139,4 +139,4 @@ if __name__ == '__main__':
     else:
         print("Available modules: \n")
         print_modules()
-        interact()
+        multi_module_mode()
